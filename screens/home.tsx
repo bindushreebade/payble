@@ -13,24 +13,29 @@ import { ScrollView } from 'react-native';
 export default function Home() {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.navbar}>
-        <View style={styles.navLinks}>
+      <MotiView from={{ translateY: -50, opacity: 0 }}
+  animate={{ translateY: 0, opacity: 1 }}
+  transition={{ type: 'timing', duration: 800 }}style={styles.navbar}>
+        <MotiView style={styles.navLinks}>
           <Text style={styles.navText}>Dashboard</Text>
           <Text style={styles.navText}>Reminders</Text>
           <Text style={styles.navText}>Spending</Text>
           <Text style={styles.navText}>Insights</Text>
-        </View>
+        </MotiView>
         <View style={styles.rightContainer}>
         </View>
         <TouchableOpacity style={styles.notification}>
           <Feather name="bell" size={24} color="#2b2f28" />
           <View style={styles.badge} />
         </TouchableOpacity>
-      </View>
+      </MotiView>
 
     {/* Hero Section */}
     <View style={styles.heroContainer}>
-        <View style={styles.textCard}>
+        <MotiView from={{ translateX: -100, opacity: 0 }}
+  animate={{ translateX: 0, opacity: 1 }}
+  transition={{ type: 'timing', duration: 1000 }}
+  style={styles.textCard} style={styles.textCard}>
             <Text style={styles.welcome}>Welcome Sara!</Text>
             <Text style={styles.track}>Stay on Track.</Text>
             <Text style={styles.control}>Stay in Control.</Text>
@@ -38,14 +43,17 @@ export default function Home() {
             Take control of your bills with timely reminders and intuitive tracking features.
             Enjoy peace of mind and financial clarity today.
             </Text>
-        </View>
+        </MotiView>
 
-        <View style={styles.imageCard}>
+        <MotiView from={{ scale: 0.5, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  transition={{ type: 'spring', damping: 10 }}
+  style={styles.imageCard} style={styles.imageCard}>
             <Image
             source={require('../assets/images/homeimg.svg')} 
             style={styles.heroImage}
             />
-        </View>
+        </MotiView>
     </View>
         <Text style={{ 
         fontSize: 30, 
@@ -60,10 +68,13 @@ export default function Home() {
     </Text>
 
     {/* Footer */}
-    <View style={styles.footer}>
+    <MotiView from={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 1500 }}
+  style={styles.footer} style={styles.footer}>
         <Text style={styles.footerText}>© 2024 Payble</Text>
 
-        <View style={styles.footerLinks}>
+        <MotiView style={styles.footerLinks}>
             <TouchableOpacity>
             <Text style={styles.linkText}>support@paybleapp.com</Text>
             </TouchableOpacity>
@@ -75,10 +86,10 @@ export default function Home() {
             <TouchableOpacity>
             <Text style={styles.linkText}>Terms of Service</Text>
             </TouchableOpacity>
-        </View>
+        </MotiView>
 
         <Text style={styles.footerVersion}>v1.0.0</Text>
-    </View>
+    </MotiView>
     </SafeAreaView>
 
     
