@@ -1,23 +1,30 @@
 {
   "name": "payble",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "~53.0.20",
-    "expo-status-bar": "~2.2.3",
-    "react": "19.0.0",
-    "react-native": "0.79.5"
+    "expo": "~50.0.10",
+    "expo-font": "~11.8.0",
+    "expo-splash-screen": "~0.23.3",
+    "react": "18.2.0",
+    "react-native": "0.73.6",
+    "react-native-gesture-handler": "~2.15.0",
+    "react-native-reanimated": "~3.10.0",
+    "react-native-safe-area-context": "4.8.2",
+    "react-native-screens": "~3.32.0",
+    "react-native-vector-icons": "^9.2.0",
+    "@react-navigation/native": "^6.1.14",
+    "@react-navigation/native-stack": "^6.9.19",
+    "lottie-react-native": "5.1.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@types/react": "~19.0.10",
-    "typescript": "~5.8.3"
+    "@babel/core": "^7.20.0"
   },
   "private": true
 }
