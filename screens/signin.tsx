@@ -33,7 +33,7 @@ export default function SignIn() {
   };
 
   const validateForm = () => {
-    const newErrors = { name: '', phone: '', email: '', password: '' };
+    const newErrors = { msg : '' };
 
     const phoneRegex = /^\d{10}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,38 +41,48 @@ export default function SignIn() {
 
     let isValid = true;
 
-    if (!name.trim()) {
-      newErrors.name = 'Name is required';
+    if(!name.trim()&&!phone.trim()&&!email.trim()&&!password.trim()){
+      newErrors.msg+='All feilds are required!\n';
       isValid = false;
     }
+    else{
+      if (!name.trim()) {
+        newErrors.msg += 'Name is required\n';
+        isValid = false;
+      }
 
-    if (!phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-      isValid = false;
-    } else if (!phoneRegex.test(phone)) {
-      newErrors.phone = 'Enter a valid 10-digit phone number';
-      isValid = false;
-    }
+      if (!phone.trim()) {
+        newErrors.msg += 'Phone number is required\n';
+        isValid = false;
+      } else if (!phoneRegex.test(phone)) {
+        newErrors.msg += 'Enter a valid 10-digit phone number\n';
+        isValid = false;
+      }
 
-    if (!email.trim()) {
-      newErrors.email = 'Email is required';
-      isValid = false;
-    } else if (!emailRegex.test(email)) {
-      newErrors.email = 'Invalid email format';
-      isValid = false;
-    }
+      if (!email.trim()) {
+        newErrors.msg += 'Email is required\n';
+        isValid = false;
+      } else if (!emailRegex.test(email)) {
+        newErrors.msg += 'Invalid email format\n';
+        isValid = false;
+      }
 
-    if (!password.trim()) {
-      newErrors.password = 'Password is required';
-      isValid = false;
-    } else if (!strongPasswordRegex.test(password)) {
-      newErrors.password = 'Password must be 8+ chars, include upper, lower, and a number';
-      isValid = false;
+      if (!password.trim()) {
+        newErrors.msg += 'Password is required\n';
+        isValid = false;
+      } else if (!strongPasswordRegex.test(password)) {
+        newErrors.msg += 'Password must be 8+ chars, include upper, lower, and a number\n';
+        isValid = false;
+      }
     }
 
     setErrors(newErrors);
     if (isValid) {
       alert('Sign In successful!');
+      navigation.navigate("Home");
+    }
+    else{
+      alert(newErrors.msg)
     }
   };
 
