@@ -14,13 +14,13 @@ export default function Home() {
   return (
     <SafeAreaView style={styles.container}>
       <MotiView from={{ translateY: -50, opacity: 0 }}
-  animate={{ translateY: 0, opacity: 1 }}
-  transition={{ type: 'timing', duration: 800 }}style={styles.navbar}>
+        animate={{ translateY: 0, opacity: 1 }}
+        transition={{ type: 'timing', duration: 800 }}style={styles.navbar}>
         <MotiView style={styles.navLinks}>
-          <Text style={styles.navText}>Dashboard</Text>
-          <Text style={styles.navText}>Reminders</Text>
-          <Text style={styles.navText}>Spending</Text>
-          <Text style={styles.navText}>Insights</Text>
+          <TouchableOpacity style={styles.navText}> Dashboard </TouchableOpacity>
+          <TouchableOpacity style={styles.navText}> Remainders </TouchableOpacity>
+          <TouchableOpacity style={styles.navText}> Spendings </TouchableOpacity>
+          <TouchableOpacity style={styles.navText}> Insights </TouchableOpacity>
         </MotiView>
         <View style={styles.rightContainer}>
         </View>
@@ -28,14 +28,17 @@ export default function Home() {
           <Feather name="bell" size={24} color="#2b2f28" />
           <View style={styles.badge} />
         </TouchableOpacity>
+        <TouchableOpacity style={styles.user}>
+          <Feather name="user" size={24} color="#2b2f28" />
+        </TouchableOpacity>
       </MotiView>
 
     {/* Hero Section */}
     <View style={styles.heroContainer}>
         <MotiView from={{ translateX: -100, opacity: 0 }}
-  animate={{ translateX: 0, opacity: 1 }}
-  transition={{ type: 'timing', duration: 1000 }}
-  style={styles.textCard} style={styles.textCard}>
+            animate={{ translateX: 0, opacity: 1 }}
+            transition={{ type: 'timing', duration: 1000 }}
+            style={styles.textCard} style={styles.textCard}>
             <Text style={styles.welcome}>Welcome Sara!</Text>
             <Text style={styles.track}>Stay on Track.</Text>
             <Text style={styles.control}>Stay in Control.</Text>
@@ -46,9 +49,9 @@ export default function Home() {
         </MotiView>
 
         <MotiView from={{ scale: 0.5, opacity: 0 }}
-  animate={{ scale: 1, opacity: 1 }}
-  transition={{ type: 'spring', damping: 10 }}
-  style={styles.imageCard} style={styles.imageCard}>
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', damping: 10 }}
+            style={styles.imageCard} style={styles.imageCard}>
             <Image
             source={require('../assets/images/homeimg.svg')} 
             style={styles.heroImage}
@@ -69,10 +72,10 @@ export default function Home() {
 
     {/* Footer */}
     <MotiView from={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 1500 }}
-  style={styles.footer} style={styles.footer}>
-        <Text style={styles.footerText}>© 2024 Payble</Text>
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1500 }}
+        style={styles.footer} style={styles.footer}>
+              <Text style={styles.footerText}>© 2024 Payble</Text>
 
         <MotiView style={styles.footerLinks}>
             <TouchableOpacity>
@@ -144,7 +147,7 @@ const styles = StyleSheet.create({
   },
   navLinks: {
     flexDirection: 'row',
-    gap: 30,
+    gap: 15,
     alignItems: 'center',
     pointerEvents: 'auto',
     },
@@ -161,8 +164,13 @@ const styles = StyleSheet.create({
   },
   notification: {
     position: 'relative',
-    marginRight: 20,
-    marginLeft: 0,
+    marginRight:0,
+  },
+  user: {
+    position: 'relative',
+    marginRight: 15,
+    borderRadius: 50,
+    borderWidth: 2,
   },
   badge: {
     width: 8,
@@ -177,6 +185,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#2b2f28',
     fontWeight: '500',
+    fontFamily: 'Baloo',
   },
   hero: {
     marginTop: 5,
