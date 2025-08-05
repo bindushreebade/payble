@@ -13,6 +13,16 @@ import Home from './screens/home';
 SplashScreen.preventAutoHideAsync(); // keep splash until fonts load
 
 const Stack = createNativeStackNavigator();
+const linking = {
+  prefixes: ['/'], // Replace with your local and deployed URLs
+  config: {
+    screens: {
+      Home: 'home',
+      SignIn: 'signin',
+      Login: 'login'
+    },
+  },
+};
 
 export default function App() {
   const [appReady, setAppReady] = useState(false);
@@ -60,7 +70,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SignIn" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="SignIn" linking={linking} screenOptions={{ headerShown: false }}>
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="Home" component={Home}/>
