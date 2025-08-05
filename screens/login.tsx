@@ -21,31 +21,32 @@ export default function Login() {
     password: '',
   });
   const validateForm = () => {
-    const newErrors = { name: '', phone: '', email: '', password: '' };
+    const newErrors = { msg:'' };
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
     let isValid = true;
 
     if (!email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.msg = 'Email is required\n';
       isValid = false;
     } else if (!emailRegex.test(email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.msg = 'Invalid email format\n';
       isValid = false;
     }
 
     if (!password.trim()) {
-      newErrors.password = 'Password is required';
+      newErrors.msg = 'Password is required\n';
       isValid = false;
-    } else if (!strongPasswordRegex.test(password)) {
-      newErrors.password = 'Password must be 8+ chars, include upper, lower, and a number';
-      isValid = false;
-    }
+    } 
 
     setErrors(newErrors);
     if (isValid) {
-      alert('Sign In successful!');
+      alert('Login Successful');
+      navigation.navigate("Home");
+    }
+    else{
+      alert(newErrors.msg);
     }
   };
 
@@ -89,7 +90,7 @@ export default function Login() {
           </View>
         </MotiView>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity style={styles.button} onPress={() => validateForm()}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </ScrollView>
