@@ -43,7 +43,7 @@ export default function Home() {
         animate={{ translateY: 0, opacity: 1 }}
         transition={{ type: 'timing', duration: 800 }}style={styles.navbar}>
         <MotiView style={styles.navLinks}>
-          <TouchableOpacity style={styles.navText}> Dashboard </TouchableOpacity>
+          <TouchableOpacity style={styles.navText} onPress={()=>navigation.navigate("Home")}> Dashboard </TouchableOpacity>
           <TouchableOpacity style={styles.navText} onPress={()=>navigation.navigate("Reminders")}> Reminders </TouchableOpacity>
           <TouchableOpacity style={styles.navText} onPress={()=>navigation.navigate("Spendings")}> Spendings </TouchableOpacity>
           <TouchableOpacity style={styles.navText}> Insights </TouchableOpacity>
