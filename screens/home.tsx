@@ -10,7 +10,10 @@ import { ScrollView } from 'react-native';
 
 
 
+
+
 export default function Home() {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       <MotiView from={{ translateY: -50, opacity: 0 }}
@@ -20,7 +23,10 @@ export default function Home() {
           <TouchableOpacity style={styles.navText}> Dashboard </TouchableOpacity>
           <TouchableOpacity style={styles.navText}> Remainders </TouchableOpacity>
           <TouchableOpacity style={styles.navText}> Spendings </TouchableOpacity>
-          <TouchableOpacity style={styles.navText}> Insights </TouchableOpacity>
+          <TouchableOpacity style={styles.navText} onPress={() => navigation.navigate('Insights')}>
+                <Text style={styles.navText}>Insights</Text>
+          </TouchableOpacity>
+
         </MotiView>
         <View style={styles.rightContainer}>
         </View>
@@ -53,7 +59,7 @@ export default function Home() {
             transition={{ type: 'spring', damping: 10 }}
             style={styles.imageCard} style={styles.imageCard}>
             <Image
-            source={require('../assets/images/homeimg.svg')} 
+            source={require('../assets/images/homeimg1.png')} 
             style={styles.heroImage}
             />
         </MotiView>

@@ -8,9 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function SignIn() {
   const navigation = useNavigation();
-  Font.loadAsync({
-    Baloo: require('../assets/fonts/BalooDa2-VariableFont_wght.ttf'), // ← relative to App.tsx
-  });
+  // Font.loadAsync({
+  //   Baloo: require('../assets/fonts/BalooDa2-VariableFont_wght.ttf'), // ← relative to App.tsx
+  // });
   
   
   const [name, setName] = useState('');

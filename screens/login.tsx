@@ -8,9 +8,9 @@ import Home from './home';
 
 
 export default function Login() {
-  Font.loadAsync({
-    Baloo: require('../assets/fonts/BalooDa2-VariableFont_wght.ttf'), // ← relative to App.tsx
-  });
+  // Font.loadAsync({
+  //   Baloo: require('../assets/fonts/BalooDa2-VariableFont_wght.ttf'), // ← relative to App.tsx
+  // });
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

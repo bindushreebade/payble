@@ -9,6 +9,7 @@ import LottieView from 'lottie-react-native';
 import SignIn from './screens/signin';
 import Login from './screens/login';
 import Home from './screens/home';
+import Insights from './screens/insights';
 
 SplashScreen.preventAutoHideAsync(); // keep splash until fonts load
 
@@ -19,7 +20,8 @@ const linking = {
     screens: {
       Home: 'home',
       SignIn: 'signin',
-      Login: 'login'
+      Login: 'login',
+      Insights: 'insights'
     },
   },
 };
@@ -74,6 +76,7 @@ export default function App() {
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen name="Home" component={Home}/>
+         <Stack.Screen name="Insights" component={Insights} />
       </Stack.Navigator>
     </NavigationContainer>
   );
