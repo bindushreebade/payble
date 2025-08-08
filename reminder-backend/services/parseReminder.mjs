@@ -1,19 +1,16 @@
 import OpenAI from 'openai';
 
+// Configure OpenRouter instead of OpenAI
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENROUTER_API_KEY,
+  baseURL: 'https://openrouter.ai/api/v1',
 });
 
 export default async function parseReminder(text) {
-  const prompt = `You are a reminder assistant. Extract the following from this sentence:
+  const prompt = `You are a reminder assistant. Extract the following fields from the sentence:
 "${text}"
 
-Required fields:
-- task: string (description of what to do)
-- date: string (YYYY-MM-DD format)
-- time: string (HH:MM format in 24-hour time)
-
-Respond ONLY with valid JSON in this exact format:
+Return ONLY raw JSON in this format:
 {
   "task": "string",
   "date": "YYYY-MM-DD",
@@ -22,26 +19,35 @@ Respond ONLY with valid JSON in this exact format:
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'openai/gpt-3.5-turbo', // or try 'mistralai/mistral-7b-instruct:free' if this doesn't work
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.2,
-      response_format: { type: 'json_object' }  // Ensures JSON output
     });
 
-    const content = response.choices[0].message.content;
-    const result = JSON.parse(content);
-    
-    // Basic validation
-    if (!result.task || !result.date || !result.time) {
-      throw new Error('Missing required fields in response');
+    const content = response.choices[0].message.content.trim();
+
+    // Clean up any code block formatting from the response
+    const jsonString = content.startsWith('```')
+      ? content.replace(/^```json?\s*/, '').replace(/```$/, '').trim()
+      : content;
+
+    const parsed = JSON.parse(jsonString);
+
+    if (!parsed.task || !parsed.date || !parsed.time) {
+      throw new Error('Missing required fields in AI response');
     }
-    
-    return result;
+
+    // Create a JavaScript Date object for the combined due date and time
+    // Format expected: date = "YYYY-MM-DD", time = "HH:MM"
+    const dueDate = new Date(`${parsed.date}T${parsed.time}:00`);
+
+    return {
+      ...parsed,
+      dueDate, // This is the new Date object to save in MongoDB
+    };
   } catch (err) {
     console.error('Reminder parsing failed:', err.message);
-    return { 
-      error: 'Failed to parse reminder',
-      details: err.message 
-    };
+    return null;
   }
 }
+

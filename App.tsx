@@ -11,10 +11,12 @@ import Home from './frontend/screens/home';
 import Profile from './frontend/screens/profile';
 import Spendings from './frontend/screens/spendings';
 import Reminders from './frontend/screens/reminders';
+import Notifications from './frontend/screens/notifications';
 
 SplashScreen.preventAutoHideAsync(); 
 
 const Stack = createNativeStackNavigator();
+
 const linking = {
   prefixes: ['/'], 
   config: {
@@ -34,13 +36,11 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        // Load custom font
         await Font.loadAsync({
           Baloo: require('./assets/fonts/BalooDa2-VariableFont_wght.ttf'),
         });
 
-        // Optional splash delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 2000)); // optional splash delay
       } catch (e) {
         console.warn(e);
       } finally {
@@ -62,27 +62,24 @@ export default function App() {
       <View style={styles.splash} onLayout={onLayoutRootView}>
         <Text style={styles.logo}>PAYBLE</Text>
         <Text style={styles.tag}>Simplifying your bills, one reminder at a time.</Text>
-        {/* <LottieView
-          source={require('./assets/animations/loading.json')}
-          autoPlay
-          loop
-          style={styles.loader}
-        /> */}
       </View>
     );
   }
-  console.log("App Ready:", appReady);
+
   return (
-    <NavigationContainer linking = {linking}>
-      <Stack.Navigator initialRouteName="SignUp" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Login" component={Login}/>
-        <Stack.Screen name="Home" component={Home}/>
-        <Stack.Screen name="Profile" component={Profile}/>
-        <Stack.Screen name="Spendings" component={Spendings}/>
-        <Stack.Screen name="Reminders" component={Reminders}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <NavigationContainer linking={linking}>
+        <Stack.Navigator initialRouteName="SignUp" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Spendings" component={Spendings} />
+          <Stack.Screen name="Reminders" component={Reminders} />
+          <Stack.Screen name="Notifications" component={Notifications} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   );
 }
 
@@ -98,13 +95,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Baloo',
     color: '#323c2bff',
     marginBottom: 10,
-    fontWeight: 800,
+    fontWeight: '800',
   },
   tag: {
     fontSize: 16,
     fontFamily: 'Baloo',
     color: '#323c2bff',
-    fontWeight: 500,
+    fontWeight: '500',
   },
   loader: {
     width: 25,
@@ -112,3 +109,4 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
 });
+

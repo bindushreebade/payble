@@ -1,6 +1,5 @@
 // Reminders.tsx
 import React, { useState } from 'react';
-import { Ionicons, FontAwesome, Feather } from '@expo/vector-icons';
 import {
   View,
   Text,
@@ -8,23 +7,18 @@ import {
   ScrollView,
   Dimensions,
   Image,
-  ImageBackground,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
 
-const sendReminderToBackend = async (text: string, parsed: { task: string; date: string }) => {
+const sendReminderToBackend = async (text: string) => {
   try {
-    const response = await fetch('http://192.168.1.5/api/reminders', {
+    const response = await fetch('http://localhost:5000/api/reminders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        original: text,
-        task: parsed.task,
-        date: parsed.date,
-      }),
+      body: JSON.stringify({ message: text }),
     });
 
     if (!response.ok) throw new Error('Failed to save reminder');
@@ -38,112 +32,71 @@ const sendReminderToBackend = async (text: string, parsed: { task: string; date:
 const Reminders = () => {
   const [reminderText, setReminderText] = useState('');
   const [savedReminders, setSavedReminders] = useState<string[]>([]);
-  const [parsedReminders, setParsedReminders] = useState<{ task: string; date: string }[]>([]);
 
   const handleSaveReminder = async () => {
     if (reminderText.trim()) {
       const newText = reminderText.trim();
-      setSavedReminders([...savedReminders, newText]);
-
-      const parsed = parseReminder(newText);
-      setParsedReminders((prev) => {
-        const updated = [parsed, ...prev];
-        return updated.slice(0, 5); // Keep only latest 5
-      });
-
+      setSavedReminders([newText, ...savedReminders]);
       setReminderText('');
 
-      // Send to backend
-      await sendReminderToBackend(newText, parsed);
+      // Send raw reminder to backend to let the AI parser handle it
+      await sendReminderToBackend(newText);
     }
   };
 
-
-  // Basic simulated parser
-  const parseReminder = (text: string) => {
-    const dateRegex = /\b(\d{1,2}(st|nd|rd|th)?\s+(January|February|March|April|May|June|July|August|September|October|November|December))\b/i;
-    const match = text.match(dateRegex);
-    const date = match ? match[0] : 'Unknown date';
-
-    // Remove parts like "Remind me to", "on <date>"
-    const cleaned = text
-      .replace(/remind me to/i, '')
-      .replace(/please/i, '')
-      .replace(dateRegex, '')
-      .replace(/(about|of|on)/gi, '')
-      .trim();
-
-    return {
-      task: cleaned || 'Unknown task',
-      date,
-    };
-  };
-
   return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.header}>
-          <Image
-            source={require('../assets/images/clock.png')}
-            style={styles.icon}
-          />
-          <Text style={styles.title}>Reminders</Text>
-        </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.header}>
+        <Image
+          source={require('../assets/images/clock.png')}
+          style={styles.icon}
+        />
+        <Text style={styles.title}>Reminders</Text>
+      </View>
 
-        <Text style={styles.description}>
-          Reminders help you stay on track with your goals, bills, payments, or tasks.
-          This space can be used to set up smart reminders based on your conversations or planned activities.
-        </Text>
+      <Text style={styles.description}>
+        Reminders help you stay on track with your goals, bills, payments, or tasks.
+        This space can be used to set up smart reminders based on your conversations or planned activities.
+      </Text>
 
-        <View style={styles.layout}>
-          {/* Chat Box */}
-          <View style={styles.chatBox}>
-            {/* List of saved reminders */}
-            {savedReminders.map((item, index) => (
-              <Text key={index} style={styles.chatBubble}>
-                {item}
-              </Text>
-            ))}
-
-            {/* Input area */}
-            <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="Type your reminder here..."
-                value={reminderText}
-                onChangeText={setReminderText}
-                style={styles.input}
-                placeholderTextColor="#777"
-              />
-              <TouchableOpacity style={styles.button} onPress={handleSaveReminder}>
-                <Text style={styles.buttonText}>Send</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Structured AI Summary */}
-            {parsedReminders.length > 0 && (
-              <View style={styles.aiSummaryBox}>
-                <Text style={styles.summaryHeader}>Recent Reminders</Text>
-                {parsedReminders.map((item, index) => (
-                  <Text key={index} style={styles.summaryItem}>
-                    • {item.task} – {item.date}
-                  </Text>
-                ))}
-              </View>
-            )}
-          </View>
-
-          {/* Reminder Info */}
-          <View style={styles.sidePanel}>
-            <Text style={styles.sideTitle}>Reminder Info</Text>
-            <Text style={styles.sideText}>
-              Our app uses AI-powered voice agents to make setting reminders effortless.
-              Just speak to the app — say something like “Remind me to pay my credit card bill on the 10th,”
-              and the AI takes care of the rest.{"\n\n"}
-              Whether it's your monthly rent, subscription renewals, or loan EMIs,
-              our AI ensures you're reminded just when you need it — no more stress, no more late fees.
+      <View style={styles.layout}>
+        {/* Chat Box */}
+        <View style={styles.chatBox}>
+          {/* List of saved reminders */}
+          {savedReminders.map((item, index) => (
+            <Text key={index} style={styles.chatBubble}>
+              {item}
             </Text>
+          ))}
+
+          {/* Input area */}
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Type your reminder here..."
+              value={reminderText}
+              onChangeText={setReminderText}
+              style={styles.input}
+              placeholderTextColor="#777"
+            />
+            <TouchableOpacity style={styles.button} onPress={handleSaveReminder}>
+              <Text style={styles.buttonText}>Send</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+
+        {/* Reminder Info */}
+        <View style={styles.sidePanel}>
+          <Text style={styles.sideTitle}>Reminder Info</Text>
+          <Text style={styles.sideText}>
+            Our app uses AI-powered voice agents to make setting reminders effortless.
+            Just speak to the app — say something like “Remind me to pay my credit card bill on the 10th,”
+            and the AI takes care of the rest.{"\n\n"}
+            Whether it's your monthly rent, subscription renewals, or loan EMIs,
+            our AI ensures you're reminded just when you need it — no more stress, no more late fees.
+          </Text>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -155,8 +108,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 40,
     paddingBottom: 40,
-    backgroundColor:'#d7f4e1ff',
-    
+    backgroundColor: '#d7f4e1ff',
   },
   header: {
     flexDirection: 'row',
@@ -167,7 +119,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginRight: 10,
-    color:"black",
+    color: 'black',
   },
   title: {
     fontSize: 30,
@@ -234,27 +186,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontFamily: 'Baloo',
-  },
-  aiSummaryBox: {
-    marginTop: 20,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
-    padding: 15,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    fontFamily: 'Baloo',
-  },
-  summaryHeader: {
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#444',
-    fontSize: 16,
-    fontFamily: 'Baloo',
-  },
-  summaryItem: {
-    fontSize: 15,
-    color: '#222',
-    marginBottom: 5,
   },
   sidePanel: {
     backgroundColor: '#81cfa0ff',

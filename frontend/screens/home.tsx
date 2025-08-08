@@ -50,10 +50,14 @@ export default function Home() {
         </MotiView>
         <View style={styles.rightContainer}>
         </View>
-        <TouchableOpacity style={styles.notification}>
-          <Feather name="bell" size={24} color="#2b2f28" />
-          <View style={styles.badge} />
-        </TouchableOpacity>
+        <TouchableOpacity 
+  style={styles.notification} 
+  onPress={() => navigation.navigate('Notifications')}
+>
+  <Feather name="bell" size={24} color="#2b2f28" />
+  <View style={styles.badge} />
+</TouchableOpacity>
+
         <TouchableOpacity style={styles.user} onPress={() => navigation.navigate('Profile')}>
           <Feather name="user" size={24} color="#2b2f28" />
         </TouchableOpacity>

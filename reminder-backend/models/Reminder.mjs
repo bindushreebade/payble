@@ -6,6 +6,11 @@ const reminderSchema = new mongoose.Schema({
   task: String,
   date: String,
   time: String,
+  dueDate: Date, // Added dueDate field to store the reminder deadline
+  isPaid: {
+    type: Boolean,
+    default: false, // Initially unpaid
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -13,3 +18,4 @@ const reminderSchema = new mongoose.Schema({
 });
 
 export default mongoose.model('Reminder', reminderSchema);
+

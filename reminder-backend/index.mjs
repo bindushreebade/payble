@@ -8,7 +8,7 @@ import morgan from 'morgan';
 
 dotenv.config();
 const app = express();
-console.log('OpenAI Key:', process.env.OPENAI_API_KEY ? 'Loaded' : 'Missing');
+console.log('OpenRouter Key:', process.env.OPENROUTER_API_KEY ? 'Loaded' : 'Missing');
 app.use(cors());
 app.use(express.json());
 

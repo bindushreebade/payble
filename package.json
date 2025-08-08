@@ -15,7 +15,7 @@
     "@react-navigation/native-stack": "^6.9.19",
     "@supabase/supabase-js": "^2.53.0",
     "expo": "^53.0.20",
-    "expo-font": "^13.3.2",
+    "expo-font": "~13.3.2",
     "expo-splash-screen": "^0.30.10",
     "metro": "^0.82.0",
     "moti": "^0.30.0",
