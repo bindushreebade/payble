@@ -1,22 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { bills } from '../spendings-backend/data/billsData';
+import { bills as initialBills } from '../spendings-backend/data/billsData';
+import { getSpreadColor } from '../spendings-backend/utils/spreadUtils';
+import { spendingsStyles } from '../spendings-backend/styles/spendingsStyles';
 import BillItem from '../spendings-backend/components/BillItem';
+import SpreadMeter from '../spendings-backend/components/SpreadMeter';
 
-const SpendingsScreen = () => {
+export default function Spendings() {
+  const [bills, setBills] = useState(initialBills);
+
+  const handlePay = (index) => {
+    setBills((prevBills) => {
+      const updated = [...prevBills];
+      updated[index] = { ...updated[index], isPaid: true };
+
+      // unpaid first, paid last
+      const unpaid = updated.filter((b) => !b.isPaid);
+      const paid = updated.filter((b) => b.isPaid);
+      return [...unpaid, ...paid];
+    });
+  };
+
+  // Only unpaid bills count towards spread calculation
+  const unpaidDates = bills
+    .filter((b) => !b.isPaid)
+    .map((b) => b.dueDate);
+
+  const spreadColor = unpaidDates.length > 0
+  ? getSpreadColor(unpaidDates)
+  : 'green'; 
+
+
   return (
-    <ScrollView style={{ padding: 16, backgroundColor: '#d6fae1ff' }}>
-      <Text style={{ fontSize: 35, fontWeight: 'bold', marginBottom: 16 ,fontFamily:"Baloo"}}>Your Bills</Text>
+    <ScrollView contentContainerStyle={spendingsStyles.container}>
+      <Text style={spendingsStyles.header}>Your Bills</Text>
+
       {bills.map((bill, index) => (
         <BillItem
           key={index}
           name={bill.name}
-          dueDate={bill.dueDate}
           isPaid={bill.isPaid}
-        />
+          dueDate={bill.dueDate}
+          onPay={() => handlePay(index)} urgencyColor={undefined}        />
       ))}
+
+      <SpreadMeter spreadColor={spreadColor} />
     </ScrollView>
   );
-};
-
-export default SpendingsScreen;
+}

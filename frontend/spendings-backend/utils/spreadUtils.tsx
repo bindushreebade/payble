@@ -1,13 +1,17 @@
-export function getSpreadColor(dates: string[]): "green" | "yellow" | "red" {
-  const parsedDates = dates.map(date => new Date(date).getTime());
-  parsedDates.sort((a, b) => a - b);
+export function getSpreadColor(dates) {
+  if (!dates || dates.length === 0) return 'green';
 
-  const gaps = parsedDates.slice(1).map((d, i) => d - parsedDates[i]);
-  const avg = gaps.reduce((a, b) => a + b, 0) / gaps.length;
+  // Convert to timestamps
+  const timestamps = dates.map(date => new Date(date).getTime());
 
-  const variance = gaps.reduce((sum, g) => sum + (g - avg) ** 2, 0) / gaps.length;
+  // Find min and max
+  const minDate = Math.min(...timestamps);
+  const maxDate = Math.max(...timestamps);
 
-  if (variance < 3 * 24 * 60 * 60 * 1000) return "green";
-  if (variance < 7 * 24 * 60 * 60 * 1000) return "yellow";
-  return "red";
+  // Difference in days
+  const diffDays = Math.floor((maxDate - minDate) / (1000 * 60 * 60 * 24));
+
+  if (diffDays <= 10) return 'red';      // Clumped
+  if (diffDays <= 20) return 'yellow';   // Somewhat okay
+  return 'green';                        // Evenly spread
 }

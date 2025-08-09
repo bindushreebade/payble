@@ -1,48 +1,67 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { format } from 'date-fns';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface BillItemProps {
-  name: string;
-  dueDate: string;
-  isPaid: boolean;
-}
-
-const getRowColor = (dueDate: string): string => {
-  const today = new Date();
-  const due = new Date(dueDate);
-  const diff = Math.ceil((due.getTime() - today.getTime()) / (1000 * 3600 * 24));
-
-  if (diff <= 10) return '#d82222ff';        // Red
-  if (diff <= 20) return '#f6cd2aff';        // Yellow
-  if (diff <= 30) return '#28de5eff';        // Green
-  return '#e0e0e0';                         
-};
-
-const BillItem: React.FC<BillItemProps> = ({ name, dueDate, isPaid }) => {
-  const rowColor = getRowColor(dueDate);
-
+export default function BillItem({ name, isPaid, dueDate, urgencyColor, onPay }) {
   return (
-    <View style={[styles.billRow, { backgroundColor: rowColor }]}>
-      <Text style={styles.billText}>
-        {isPaid ? '✅' : '⭕'} {name} - Due: {format(new Date(dueDate), 'dd MMM')}
-      </Text>
+    <View style={styles.item}>
+      {/* Left: urgency indicator */}
+      <View style={[styles.colorIndicator, { backgroundColor: urgencyColor }]} />
+
+      {/* Middle: Bill details */}
+      <View style={styles.details}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.date}>Due: {dueDate}</Text>
+      </View>
+
+      {/* Right: Pay button or Paid label */}
+      {!isPaid ? (
+        <TouchableOpacity style={styles.payBtn} onPress={onPay}>
+          <Text style={styles.payBtnText}>Pay</Text>
+        </TouchableOpacity>
+      ) : (
+        <Text style={styles.paidText}>Paid</Text>
+      )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  billRow: {
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 12,
-    elevation: 2,
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
-  billText: {
+  colorIndicator: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 12,
+  },
+  details: {
+    flex: 1,
+  },
+  name: {
     fontSize: 16,
-    fontWeight: '500',
-    fontFamily:"Baloo",
+    fontWeight: 'bold',
+  },
+  date: {
+    fontSize: 14,
+    color: '#555',
+  },
+  payBtn: {
+    backgroundColor: 'green',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 5,
+  },
+  payBtnText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  paidText: {
+    color: 'gray',
+    fontStyle: 'italic',
   },
 });
-
-export default BillItem;
